@@ -20,14 +20,19 @@ power_data <- read_delim("data/household_power_consumption.txt",
                          na = "?", 
                          trim_ws = TRUE)
 
-power_data$Date <- as.Date(power_data$Date, format = "%d/%m/%Y")
 
+#===============================================================================
+# Combine date and time into single variable
+
+power_data <- power_data %>% 
+              mutate(date_time = as.POSIXct(paste(Date, Time),
+                                            format= "%d/%m/%Y %H:%M:%S"))
 
 #===============================================================================
 # Subset data to 2007-02-01 & 2007-02-02
 
 feb_data <- power_data %>%
-              filter(Date == "2007-02-01" | Date == "2007-02-02")
+            filter(Date %in% c("1/2/2007", "2/2/2007"))
 
 
 #===============================================================================
